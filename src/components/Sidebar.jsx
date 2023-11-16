@@ -6,7 +6,7 @@ const Sidebar = ({ isActive }) => {
       <div className="sidebar">
         <div className="profile">
           <span className="logo">❤</span>
-          {/* Logo will be an emoji instead of an actual img (just like github) */}
+          {/* Logo will be an emoji instead of an actual img (just like github status) */}
           <div className="name-container">
             <span>Lucas</span>
             <span>Fischer</span>
