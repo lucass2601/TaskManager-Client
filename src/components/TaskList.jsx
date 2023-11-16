@@ -1,17 +1,18 @@
 import Task from "./Task";
 import AddTaskButton from "./AddTaskButton";
-import AddTask from "./AddTask";
+import TaskModal from "./TaskModal";
 import { useState, createContext, useContext, useEffect } from "react";
 
 export const TaskContext = createContext();
-export const AddTaskContext = createContext();
 
-export const useAddTask = () => {
-  return useContext(AddTaskContext);
+export const useTaskConfiguration = () => {
+  return useContext(TaskContext);
 };
 
 const TaskList = ({ filter }) => {
   const [addTaskModal, setAddTaskModal] = useState(false);
+  const [editedTask, setEditedTask] = useState({});
+  const [isEdit, setIsEdit] = useState({});
   const [tasks, setTasks] = useState([
     {
       id: 1,
@@ -40,7 +41,20 @@ const TaskList = ({ filter }) => {
   ]);
   const [tasksFilter, setTasksFilter] = useState(tasks);
 
-  const openTaskModal = () => {
+  const openTaskModal = (task) => {
+    if (task) {
+      setIsEdit(true);
+      setEditedTask(task);
+    } else {
+      setIsEdit(false);
+      setEditedTask({
+        title: "",
+        description: "",
+        date: "",
+        important: false,
+        completed: false,
+      });
+    }
     setAddTaskModal(true);
   };
 
@@ -48,8 +62,47 @@ const TaskList = ({ filter }) => {
     setAddTaskModal(false);
   };
 
-  const addTask = (newTask) => {
-    setTasks([...tasks, newTask]);
+  const configureTask = (status, task) => {
+    switch (status) {
+      case "create":
+        createTask(task);
+        break;
+      // case "read":
+      //   readTask(task);
+      //   break;
+      case "update":
+        updateTask(task);
+        break;
+      case "delete":
+        deleteTask(task);
+        break;
+      default:
+        console.log("An Error occured");
+        break;
+    }
+  };
+
+  const createTask = (taskParam) => {
+    taskParam.id = tasks.length + 1; // temporary fix until db connection is established (CAN BREAK APPLICATION)
+    setTasks([...tasks, taskParam]);
+  };
+
+  // const readTask = (index) => {
+  //   return tasks[index]
+  // };
+
+  const updateTask = (taskParam) => {
+    let updatedTaskList = [...tasks];
+    const taskIndex = tasks.findIndex((task) => task.id === taskParam.id);
+    updatedTaskList[taskIndex] = taskParam;
+    setTasks(updatedTaskList);
+  };
+
+  const deleteTask = (taskParam) => {
+    let updatedTaskList = [...tasks];
+    const taskIndex = tasks.findIndex((task) => task.id === taskParam.id);
+    updatedTaskList.splice(taskIndex, 1);
+    setTasks(updatedTaskList);
   };
 
   useEffect(() => {
@@ -62,29 +115,29 @@ const TaskList = ({ filter }) => {
     } else {
       setTasksFilter(tasks);
     }
-  }, [filter]);
+  }, [filter, tasks]);
 
   return (
     <>
       <h1>All Tasks</h1>
-      <TaskContext.Provider value={tasks}>
-        <AddTaskContext.Provider value={addTask}>
-          <div className="tasks-container">
-            {tasksFilter.map((task, index) => (
-              <Task
-                key={index}
-                title={task.title}
-                description={task.description}
-                date={task.date}
-                important={task.important}
-                completed={task.completed}
-              />
-            ))}
+      <TaskContext.Provider value={configureTask}>
+        <div className="tasks-container">
+          {tasksFilter.map((task) => (
+            <Task
+              task={task}
+              editTask={() => openTaskModal(task)}
+              key={task.id}
+            />
+          ))}
 
-            <AddTaskButton handleButtonClick={openTaskModal} />
-            <AddTask isActive={addTaskModal} closeModal={closeTaskModal} />
-          </div>
-        </AddTaskContext.Provider>
+          <AddTaskButton handleButtonClick={() => openTaskModal()} />
+          <TaskModal
+            isActive={addTaskModal}
+            closeModal={closeTaskModal}
+            taskProp={editedTask}
+            isEdit={isEdit}
+          />
+        </div>
       </TaskContext.Provider>
     </>
   );
