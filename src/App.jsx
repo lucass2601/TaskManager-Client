@@ -9,9 +9,18 @@ const App = () => {
         <div className="content">
           <Routes>
             <Route index element={<TaskList />} />
-            <Route path="/important" element={<h1>Important</h1>} />
-            <Route path="/completed" element={<h1>Completed</h1>} />
-            <Route path="/incompleted" element={<h1>Incompleted</h1>} />
+            <Route
+              path="/important"
+              element={<TaskList filter={{ key: "important", value: true }} />}
+            />
+            <Route
+              path="/completed"
+              element={<TaskList filter={{ key: "completed", value: true }} />}
+            />
+            <Route
+              path="/incompleted"
+              element={<TaskList filter={{ key: "completed", value: false }} />}
+            />
           </Routes>
         </div>
       </MainLayout>
