@@ -7,14 +7,14 @@ const Task = ({ title, description, date, completed }) => {
       <section className="control">
         <div>
           {completed ? (
-            <button>Completed</button>
+            <button className="outline">✔</button>
           ) : (
-            <button>Incompleted</button>
+            <button className="outline">❌</button>
           )}
         </div>
         <div style={{ display: "flex" }}>
           <button className="secondary outline">✍🏻</button>
-          <button className="secondary outline">❌</button>
+          <button className="secondary outline">🗑</button>
         </div>
       </section>
     </article>
