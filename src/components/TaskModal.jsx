@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { useAddTask } from "./TaskList";
+import { useTaskConfiguration } from "./TaskList";
 
-const AddTask = ({ isActive, closeModal }) => {
+const TaskModal = ({ isActive, closeModal, taskProp, isEdit }) => {
   const [task, setTask] = useState({
     title: "",
     description: "",
@@ -11,15 +11,10 @@ const AddTask = ({ isActive, closeModal }) => {
   });
 
   useEffect(() => {
-    if (!isActive)
-      setTask({
-        title: "",
-        description: "",
-        date: "",
-        important: false,
-        completed: false,
-      });
-  }, [isActive]);
+    if (isActive) {
+      setTask(taskProp);
+    }
+  }, [isActive, taskProp]);
 
   const checkboxStylings = {
     display: "flex",
@@ -27,14 +22,13 @@ const AddTask = ({ isActive, closeModal }) => {
     alignItems: "center",
   };
 
-  const submitTask = useAddTask();
+  const submitTask = useTaskConfiguration();
 
   return (
     <dialog open={isActive}>
       <article>
         <a className="close" onClick={closeModal}></a>
-        <h3>Create a Task</h3>
-
+        {isEdit ? <h3>Edit Task</h3> : <h3>Create a Task</h3>}
         <label>
           Title
           <input
@@ -84,10 +78,10 @@ const AddTask = ({ isActive, closeModal }) => {
             role="button"
             onClick={() => {
               closeModal();
-              submitTask(task);
+              isEdit ? submitTask("update", task) : submitTask("create", task);
             }}
           >
-            Add Task
+            {isEdit ? "Edit Task" : "Add Task"}
           </button>
         </footer>
       </article>
@@ -95,4 +89,4 @@ const AddTask = ({ isActive, closeModal }) => {
   );
 };
 
-export default AddTask;
+export default TaskModal;
