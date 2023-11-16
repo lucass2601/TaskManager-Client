@@ -1,4 +1,4 @@
-const CreateTask = ({ handleButtonClick }) => {
+const AddTaskButton = ({ handleButtonClick }) => {
   const cardStylings = { display: "flex", justifyContent: "center" };
 
   return (
@@ -13,4 +13,4 @@ const CreateTask = ({ handleButtonClick }) => {
   );
 };
 
-export default CreateTask;
+export default AddTaskButton;
