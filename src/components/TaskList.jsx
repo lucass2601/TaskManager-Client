@@ -119,7 +119,12 @@ const TaskList = ({ filter }) => {
 
   return (
     <>
-      <h1>All Tasks</h1>
+      <header className="content-header">
+        <h1>All Tasks</h1>
+        <button onClick={() => openTaskModal()} className="secondary outline">
+          +
+        </button>
+      </header>
       <TaskContext.Provider value={configureTask}>
         <div className="tasks-container">
           {tasksFilter.map((task) => (
