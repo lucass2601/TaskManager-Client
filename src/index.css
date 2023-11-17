@@ -1,7 +1,7 @@
 .main-layout {
   display: flex;
   flex-direction: row;
-  height: 100dvh;
+  height: 100svh;
   align-items: center;
 }
 
