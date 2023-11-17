@@ -29,6 +29,31 @@
   .sidebar {
     position: absolute;
   }
+  .main-layout {
+    width: 100% !important;
+    padding: 0 !important;
+  }
+  .content {
+    margin: 0 !important;
+  }
+
+  .content h1 {
+    text-align: center;
+  }
+
+  .tasks-container {
+    justify-content: center;
+  }
+
+  .content-header {
+    justify-content: center !important;
+  }
+
+  .content-header button {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+  }
 }
 
 @media only screen and (min-width: 1023px) {
@@ -88,6 +113,17 @@
 }
 .control button {
   margin: 0;
+}
+
+.content-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.content-header button {
+  margin: 0 !important;
+  width: initial;
+  font-weight: bold;
 }
 
 h1,
